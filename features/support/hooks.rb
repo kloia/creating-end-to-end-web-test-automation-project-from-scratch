@@ -10,7 +10,6 @@ After do |scenario|
     else
       puts "PASSED ==> #{scenario.name}"
     end
-    Capybara.current_session.driver.quit
   rescue Exception => exception
     puts "FAILED ==> #{exception}"
     Capybara.current_session.driver.quit
