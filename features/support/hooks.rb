@@ -5,11 +5,10 @@ end
 
 After do |scenario|
   begin
-    scenario_name = scenario.name.gsub(/[^A-Za-z0-9 ]/, "").gsub(/\s+/, "_")
     if scenario.failed?
-      puts "FAILED ==> #{scenario_name}\n#{scenario.exception}:#{scenario.exception.message}"
+      puts "FAILED ==> #{scenario.name}\n#{scenario.exception}:#{scenario.exception.message}"
     else
-      puts "PASSED ==> #{scenario_name}"
+      puts "PASSED ==> #{scenario.name}"
     end
     Capybara.current_session.driver.quit
   rescue Exception => exception
@@ -17,4 +16,3 @@ After do |scenario|
     Capybara.current_session.driver.quit
   end
 end
-
