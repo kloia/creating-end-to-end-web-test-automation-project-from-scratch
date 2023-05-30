@@ -49,7 +49,7 @@ pipeline {
                 failedScenariosNumber: -1, 
                 failedStepsNumber: -1, 
                 fileIncludePattern: '**/*.json',
-                jsonReportDirectory: '/reports/reports.json', 
+                jsonReportDirectory: 'reports', 
                 pendingStepsNumber: -1, 
                 reportTitle: 'Cucumber Report', 
                 skippedStepsNumber: -1, 
