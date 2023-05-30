@@ -2,7 +2,7 @@ pipeline {
     agent any
         parameters {      
         choice(name: 'Headless', choices: ['true', 'false'], description: '')
-        choice(name: 'Browser', choices: ['chrome', 'firefox'], description: '')
+        choice(name: 'Browser', choices: ['chrome', 'firefox','remote-chrome','remote-firefox'], description: '')
         string(name: 'ThreadCount', defaultValue: '1', description: '')
         string(name: 'Retry', defaultValue: '1', description: '')
             gitParameter name: 'BRANCH_TAG',
@@ -49,7 +49,7 @@ pipeline {
                 failedScenariosNumber: -1, 
                 failedStepsNumber: -1, 
                 fileIncludePattern: '**/*.json',
-                jsonReportDirectory: '/reports', 
+                jsonReportDirectory: '/reports/reports.json', 
                 pendingStepsNumber: -1, 
                 reportTitle: 'Cucumber Report', 
                 skippedStepsNumber: -1, 
