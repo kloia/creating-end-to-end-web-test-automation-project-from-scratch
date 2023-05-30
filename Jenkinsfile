@@ -9,6 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        env.PATH = "/usr/local/bin/docker"
         sh 'docker build -t muhammettopcu/dockerize-ruby-web:1.1.5 .'
       }
     }
