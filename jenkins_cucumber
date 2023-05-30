@@ -1,0 +1,78 @@
+pipeline {
+    agent { label 'automation' }
+        parameters {      
+        choice(name: 'Headless', choices: ['true', 'false'], description: '')
+        string(name: 'TagName', defaultValue: '@smoke', description: 'Multiple Tag--> @success_login or @login_with_invalid_phone_no or @login_with_null_phone_no , Single Tag--> @smoke')
+        choice(name: 'Browser', choices: ['chrome', 'firefox'], description: '')
+        string(name: 'Environment', defaultValue: 'beta', description: '')
+        string(name: 'ThreadCount', defaultValue: '1', description: '')
+        string(name: 'Retry', defaultValue: '1', description: '')
+            gitParameter name: 'BRANCH_TAG',
+                        type: 'PT_BRANCH',
+                        defaultValue: 'master',
+                        selectedValue: 'DEFAULT',
+                        quickFilterEnabled: true,
+                        sortMode: 'DESCENDING_SMART',
+                        tagFilter: '*',
+                        branchFilter: 'origin/(.*)',
+                        useRepository: '.*.git',
+                        description: 'Select your branch'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                           branches: [[name: "${params.BRANCH_TAG}"]],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [],
+                            gitTool: 'default',
+                            submoduleCfg: [],
+                            userRemoteConfigs: [[credentialsId:'github',url: 'https://github.com/kloia/dockerize-ruby-web-project.git']]
+                        ])
+            }
+        }
+        stage('Running Test') {
+            steps {
+                sh """
+                    bundle install
+                    bundle update
+                    bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o '-p parallel --tags "${TagName}" headless=${Headless} browser=${Browser} env=${params.Environment} --retry ${params.Retry.toInteger()}'
+                """
+            }
+        }
+    }
+    post {
+        always {
+            cucumber([
+                buildStatus: 'null', 
+                customCssFiles: '', 
+                customJsFiles: '', 
+                failedFeaturesNumber: -1, 
+                failedScenariosNumber: -1, 
+                failedStepsNumber: -1, 
+                fileIncludePattern: '**/*.json',
+                jsonReportDirectory: '/reports', 
+                pendingStepsNumber: -1, 
+                reportTitle: 'Cucumber Report', 
+                skippedStepsNumber: -1, 
+                sortingMethod: 'ALPHABETICAL', 
+                undefinedStepsNumber: -1
+            ])
+        }
+        success{
+            script{
+                sh "echo successful"
+           }
+        }
+        failure{
+            script{
+                sh "echo failed"
+           }
+        }
+        aborted{
+            script{
+                sh "echo aborted"
+            }
+        }
+    }
+}
