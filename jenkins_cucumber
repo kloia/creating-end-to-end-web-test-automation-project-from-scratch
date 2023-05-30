@@ -34,9 +34,9 @@ pipeline {
         stage('Running Test') {
             steps {
                 sh """
-                    sudo bundle install
-                    sudo bundle update
-                    sudo bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o '-p parallel --tags "${TagName}" headless=${Headless} browser=${Browser} env=${params.Environment} --retry ${params.Retry.toInteger()}'
+                    bundle install
+                    bundle update
+                    bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o '-p parallel --tags "${TagName}" headless=${Headless} browser=${Browser} env=${params.Environment} --retry ${params.Retry.toInteger()}'
                 """
             }
         }
