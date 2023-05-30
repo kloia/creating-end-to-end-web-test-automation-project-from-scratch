@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'automation' }
+    agent any
         parameters {      
         choice(name: 'Headless', choices: ['true', 'false'], description: '')
         string(name: 'TagName', defaultValue: '@smoke', description: 'Multiple Tag--> @success_login or @login_with_invalid_phone_no or @login_with_null_phone_no , Single Tag--> @smoke')
