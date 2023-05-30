@@ -34,7 +34,7 @@ pipeline {
         stage('Running Test') {
             steps {
                 sh """
-                    bundle install
+                    bundle install --path ~/.gem
                     bundle update
                     bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o '-p parallel --tags "${TagName}" headless=${Headless} browser=${Browser} env=${params.Environment} --retry ${params.Retry.toInteger()}'
                 """
