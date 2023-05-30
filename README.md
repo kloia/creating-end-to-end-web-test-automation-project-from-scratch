@@ -1,4 +1,4 @@
-# Dockerize Ruby Web Test Automation Project from Scratch
+# Dockerize Ruby Web Test Automation Project from Scratch 
 The project that is created in our blogpost series called: "Dockerize Ruby Web Test Automation Project from Scratch"
 
 The blogpost series consist of 5 parts:
