@@ -2,9 +2,7 @@ pipeline {
     agent any
         parameters {      
         choice(name: 'Headless', choices: ['true', 'false'], description: '')
-        string(name: 'TagName', defaultValue: '@smoke', description: 'Multiple Tag--> @success_login or @login_with_invalid_phone_no or @login_with_null_phone_no , Single Tag--> @smoke')
         choice(name: 'Browser', choices: ['chrome', 'firefox'], description: '')
-        string(name: 'Environment', defaultValue: 'beta', description: '')
         string(name: 'ThreadCount', defaultValue: '1', description: '')
         string(name: 'Retry', defaultValue: '1', description: '')
             gitParameter name: 'BRANCH_TAG',
@@ -36,7 +34,7 @@ pipeline {
                 sh """
                     bundle install
                     bundle update
-                    bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o '-p parallel --tags "${TagName}" headless=${Headless} browser=${Browser} env=${params.Environment} --retry ${params.Retry.toInteger()}'
+                    bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o 'headless=${Headless} browser=${Browser} --retry ${params.Retry.toInteger()}'
                 """
             }
         }
