@@ -18,4 +18,3 @@ For the detailed info, please follow the instructions given in the blogposts :)
 * **Capybara** - Web-based APP Framework
 * **RSpec** - Assertion & Validation Framework
 * **Selenium** - Web APP Test Automation Tool
-
