@@ -2,7 +2,7 @@ pipeline {
     agent any
         parameters {      
         choice(name: 'Headless', choices: ['true', 'false'], description: '')
-        choice(name: 'Browser', choices: ['chrome', 'firefox','remote-chrome','remote-firefox'], description: '', defaultValue: 'remote-chrome')
+        choice(name: 'Browser', choices: ['remote-chrome','chrome', 'firefox','remote-firefox'], description: '')
         string(name: 'ThreadCount', defaultValue: '1', description: '')
         string(name: 'Retry', defaultValue: '1', description: '')
             gitParameter name: 'BRANCH_TAG',
