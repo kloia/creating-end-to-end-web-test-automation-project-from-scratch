@@ -17,4 +17,4 @@ For the detailed info, please follow the instructions given in the blogposts :)
 * **Cucumber** - Gherkin Syntax Framework
 * **Capybara** - Web-based APP Framework
 * **RSpec** - Assertion & Validation Framework
-* **Selenium** - Web APP Test Automation Tool
+* **Selenium** - Web APP Test Automation Tool 
