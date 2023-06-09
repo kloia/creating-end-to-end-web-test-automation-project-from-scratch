@@ -2,7 +2,7 @@ pipeline {
     agent any
         parameters {      
         choice(name: 'Headless', choices: ['true', 'false'], description: '')
-        choice(name: 'Browser', choices: ['remote-chrome','chrome', 'remote-firefox','firefox'], description: '')
+        choice(name: 'Browser', choices: ['remote-chrome', 'remote-firefox'], description: '')
         string(name: 'ThreadCount', defaultValue: '1', description: '')
         string(name: 'Retry', defaultValue: '1', description: '')
             gitParameter name: 'BRANCH_TAG',
@@ -17,25 +17,9 @@ pipeline {
                         description: 'Select your branch'
     }
     stages {
-        stage('Checkout') {
+        stage('Checkout & Run Tests') {
             steps {
-                checkout([$class: 'GitSCM',
-                           branches: [[name: "${params.BRANCH_TAG}"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            extensions: [],
-                            gitTool: 'default',
-                            submoduleCfg: [],
-                            userRemoteConfigs: [[credentialsId:'github',url: 'https://github.com/kloia/dockerize-ruby-web-project.git']]
-                        ])
-            }
-        }
-        stage('Running Test') {
-            steps {
-                sh """
-                    bundle install
-                    bundle update
-                    bundle exec parallel_cucumber -n ${params.ThreadCount.toInteger()} -o 'headless=${Headless} browser=${Browser} --retry ${params.Retry.toInteger()}'
-                """
+                sh "git checkout ${params.BRANCH_TAG} && parallel_cucumber -n ${params.ThreadCount.toInteger()} -o 'headless=${Headless} browser=${Browser} --retry ${params.Retry.toInteger()}'"
             }
         }
     }
