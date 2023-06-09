@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh "docker build -t muhammettopcu/dockerize-ruby-web:$DOCKER_VERSION -t muhammettopcu/dockerize-ruby-web:latest"
+        sh "docker build -t muhammettopcu/dockerize-ruby-web:$DOCKER_VERSION -t muhammettopcu/dockerize-ruby-web:latest https://github.com/kloia/dockerize-ruby-web-project.git"
       }
     }
     stage('Login') {
