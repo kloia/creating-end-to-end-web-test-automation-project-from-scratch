@@ -8,6 +8,7 @@ module BaseConfig
     @wait_time
   end
 
+  #@options Inside a docker container => 'http://selenium-hub:4444'
   @remote_url = ENV['remote_url'] || 'http://localhost:4444'
   def self.remote_url
     @remote_url
