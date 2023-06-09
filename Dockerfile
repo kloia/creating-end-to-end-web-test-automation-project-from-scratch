@@ -5,10 +5,10 @@ RUN apt update && apt install git
 RUN apt-get install -y ffmpeg && apt-get install bc
 
 WORKDIR /usr/src/app
-COPY Gemfile /usr/src/app
+RUN curl -o /usr/src/app/Gemfile https://raw.githubusercontent.com/kloia/dockerize-ruby-web-project/master/Gemfile
 RUN gem install bundler && bundle install
 
-COPY . /usr/src/app
+RUN cd /usr/src/app && git init && git remote add origin https://github.com/kloia/dockerize-ruby-web-project.git && git fetch && git checkout -f origin/master
 
 CMD parallel_cucumber -n 2
 
