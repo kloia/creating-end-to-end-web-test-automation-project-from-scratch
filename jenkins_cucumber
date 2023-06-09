@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Checkout & Run Tests') {
             steps {
-                sh "git checkout ${params.BRANCH_TAG} && parallel_cucumber -n ${params.ThreadCount.toInteger()} -o 'headless=${Headless} browser=${Browser} --retry ${params.Retry.toInteger()}'"
+                sh "docker run muhammettopcu/dockerize-ruby-web:latest git checkout ${params.BRANCH_TAG} && parallel_cucumber -n ${params.ThreadCount.toInteger()} -o 'headless=${Headless} browser=${Browser} --retry ${params.Retry.toInteger()}'"
             }
         }
     }
