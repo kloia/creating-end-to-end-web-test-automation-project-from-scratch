@@ -5,7 +5,6 @@ RUN apt update && apt install git
 RUN apt-get install -y ffmpeg && apt-get install bc
 
 WORKDIR /usr/src/app
-
 COPY Gemfile /usr/src/app
 RUN gem install bundler && bundle install
 
