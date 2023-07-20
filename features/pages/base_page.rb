@@ -7,7 +7,7 @@ class BasePage
     @btn_sub_categories_xpath="//a[@class='hmenu-item'][text()='%s']"
     @lbl_searched_category="#searchDropdownBox option[selected]"
 
-  end
+  end 
 
   def go_to_home_page
     visit('https://www.amazon.com/')
