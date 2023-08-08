@@ -1,12 +1,12 @@
 class HomePage
   def initialize
-    @txt_search_bar="#twotabsearchtextbox"
-    @btn_search_submit= "#nav-search-submit-button"
+    @txt_search_bar_css="#twotabsearchtextbox"
+    @btn_search_submit_css= "#nav-search-submit-button"
   end
 
   def search_item(item)
-    find(@txt_search_bar).send_keys(item)
-    find(@btn_search_submit).click
+    find(@txt_search_bar_css).send_keys(item)
+    find(@btn_search_submit_css).click
   end
 
   def click_link_by_text(text)

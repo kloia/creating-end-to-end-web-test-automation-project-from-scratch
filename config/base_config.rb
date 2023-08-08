@@ -3,7 +3,7 @@
 module BaseConfig
 
   @wait_time = 20
-
+  # Default wait time variable to be used on Capybara functions.
   def self.wait_time
     @wait_time
   end
@@ -15,10 +15,12 @@ module BaseConfig
     @remote_url
   end
 
-  @browser = ENV['browser'] || 'remote-chrome'
+  @browser = ENV['browser'] || 'chrome'
   #     Available options
   #       * chrome
   #       * firefox
+  #       * remote-chrome
+  #       * remote-firefox
   def self.browser
     @browser
   end
