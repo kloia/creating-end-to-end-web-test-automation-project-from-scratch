@@ -15,7 +15,7 @@ module BaseConfig
     @remote_url
   end
 
-  @browser = ENV['browser'] || 'chrome'
+  @browser = ENV['browser'] || 'remote-chrome'
   #     Available options
   #       * chrome
   #       * firefox
