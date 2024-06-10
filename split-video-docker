@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#Find the video file
+video_path=$(find /usr/src/app/video -type f -name "*.mp4")
+
+#Take the screenshot of the first frame of the video
+ffmpeg -i $video_path -vframes 1 /usr/src/app/video/screenshot.png
+
+#Get the list of of all frames resembling to the image with %85 ratio
+ffmpeg -i $video_path -loop 1 -i /usr/src/app/video/screenshot.png -an -filter_complex "blend=difference:shortest=1,blackframe=85:32" -f null - > /usr/src/app/video/output.txt 2>&1
+
+file='/usr/src/app/video/output.txt'
+regex='t:([0-9\.]+)'
+detected='/usr/src/app/video/detected.txt'
+
+global_rematch() {
+    local file=$1 regex=$2
+    timeStamps=()
+    while IFS= read -r line; do
+        [[ $line =~ $regex ]]
+        if [[ "${BASH_REMATCH[1]}" == "" ]]; then
+            :
+        else
+            timeStamps+=("${BASH_REMATCH[1]}")
+        fi
+    done < $file
+}
+
+
+# Function to convert seconds to HH:MM:SS format using awk
+seconds_to_hms() {
+    local seconds=$1
+
+    local hours=$(awk -v secs="$seconds" 'BEGIN { printf "%02d", int(secs / 3600) }')
+    local minutes=$(awk -v secs="$seconds" 'BEGIN { printf "%02d", int((secs / 60) % 60) }')
+    local seconds=$(awk -v secs="$seconds" 'BEGIN { printf "%06.3f", secs % 60 }')
+
+    echo "$hours:$minutes:$seconds"
+}
+
+global_rematch "$file" "$regex" 
+
+newTime=()
+
+for ((i=1;i<${#timeStamps[@]};i++)); do
+    if (( $(echo "${timeStamps[$i+1]}-${timeStamps[$i]} > 1" |bc -l) )); then
+        newTime+=($(seconds_to_hms "${timeStamps[$i]}"))
+        newTime+=($(seconds_to_hms "${timeStamps[$i+1]}"))
+    fi
+done
+
+# Write array elements to file
+for element in "${newTime[@]}"; do
+    echo "$element" >> "$detected"
+done
+
+scene-time -i /usr/src/app/video/detected.txt -o /usr/src/app/video/cutlist.txt
+
+scene-cut -i $video_path -c /usr/src/app/video/cutlist.txt
+
+rm /usr/src/app/video/cutlist.txt /usr/src/app/video/detected.txt /usr/src/app/video/output.txt /usr/src/app/video/screenshot.png  
